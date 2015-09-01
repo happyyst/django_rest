@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Django settings for DjangoRest project.
 
@@ -111,13 +112,10 @@ GRAPPELLI_ADMIN_TITLE = 'Django-REST'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'apps.api.common.permissions.IsAuthenticated',
-    ],
 
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'apps.api.common.authentication.TokenAuthentication',
-    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'apps.api.common.authentication.TokenAuthentication',
+    # ],
     'EXCEPTION_HANDLER': 'apps.api.common.handlers.exception_handler',
 }
 
@@ -134,4 +132,5 @@ SWAGGER_SETTINGS = {
     "api_key": 'token',  # An API key
     "is_authenticated": False,  # Set to True to enforce user authentication,
     "is_superuser": False,  # Set to True to enforce admin only access
+    'resource_access_handler': 'apps.api.common.handlers.resource_access_handler'  # 只有staff和superuser可以查看文档
 }
