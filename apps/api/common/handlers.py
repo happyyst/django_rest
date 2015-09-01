@@ -7,7 +7,7 @@ from rest_framework import exceptions
 from rest_framework.compat import set_rollback
 # from django.core.urlresolvers import resolve
 from django.middleware.csrf import CsrfViewMiddleware
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user
 from .response import error
 
 
@@ -35,12 +35,10 @@ class CSRFCheck(CsrfViewMiddleware):
 def resource_access_handler(request, resource):
     """ Callback for resource access. Determines who can see the documentation for which API. """
     # Get the underlying HttpRequest object
-    try:
-        # 因为rest frame work使用token认证覆盖了默认的认证方式, 这里通过session来确定文档用户的真实身份
-        _auth_user_id = request.session['_auth_user_id']
-        user = User.objects.get(id=_auth_user_id)
-    except:
-        user = None
+
+    # 因为rest frame work使用token认证覆盖了默认的认证方式, 这里通过session来确定文档用户的真实身份
+
+    user = get_user(request)
 
     # Unauthenticated, CSRF validation not required
     if not user or not user.is_active:
